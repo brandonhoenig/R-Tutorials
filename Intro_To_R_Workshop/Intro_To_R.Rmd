@@ -1,0 +1,448 @@
+---
+title: "R For Beginners"
+author: "Brandon D. Hoenig"
+date: "11/14/2018"
+output: html_document
+---
+#Introduction
+
+This R script is heavily annotated to allow for you to work through it without instruction in your home time.  
+
+##Things to keep in mind for this workshop 
+
+Output from running code will normally be viewed in the console (bottom-left quadrant) or the miscellaneous tab (bottom-right quadrant), but today it will display directly in the script (top-left quadrant).  This is caused by the type of script file I'm using for this workshop.  
+
+Normally, any comments in an R code must have a '#' to their left.  As this is a different kind of script file (called an R Markdown file) I can put comments directly into the script. You likely will not need to do this as beginners in R. 
+
+Ignore the {r eval = FALSE} as well as any colored text or text surrounded with odd characters.  This was put there by the instructor for his own uses. 
+
+If you have error messages, please let me know.  Do not get caught behind because you may be worried you are making a stupid mistake.  As an experienced R-user, I once spent 2.5 hours fixing an issue in my code caused by an extra comma. 
+
+## Section 1: The Absolute Basics
+
+### R is very picky about capitalization, spelling, and punctuation
+
+Most R code that doesn't work is missing a comma, a parenthese, or something is spelled incorrectly. 
+
+For Example:
+```{r eval= FALSE}
+
+view(iris) #Doesn't work because the 'v' in view is lower case
+
+View(iris) #Capitalized V makes this function work
+```
+
+
+### Running Code
+
+Three Methods to run your code
+
+_Method 1 (The Good Way)_ Moving cursor to line of interest and using CTRL + Enter (Windows) or CMD + Enter (Mac)
+
+_Method 2 (The Bad Way)_ Moving cursor to line of interest and pressing 'Run' Button in the top right of the top left quadrant
+
+_Method 3 (The Ugly Way)_ Copying your entire code and pasting it into the console and pressing "Enter" like a maniac. 
+
+#### Practice Running Code
+
+```{r echo = FALSE}
+2*8
+
+15/3
+
+21 + 32
+```
+
+### The '#' sign
+
+The '#' sign allows me to leave comments without running a code.  For Example:
+
+```{r}
+2+2
+
+#3+3 -- R is going to skip this line and run the next code that it sees
+
+4+4 #This code will run because the # is after what is going to run
+
+#Leaving comments in code in IMPERATIVE. Your future self will thank you. 
+
+```
+
+### The '<-' & '=' symbols
+
+The '<-' and '=' signs are **assignment functions**. Everything you manipulate in R is an **object**. We need to name these objects with the assignment function.  For Example:
+
+```{r}
+Data_Analysis_in_R <- 1
+
+Data_Analysis_in_Excel = 0
+
+# R can be used for logical functions, so we can have R answer life's simplest questions. 
+
+Data_Analysis_in_R > Data_Analysis_in_Excel
+
+```
+
+### Packages in R
+
+Everything you do in R will be done by a **function**.  **Packages** are created to store functions with a similar purpose.
+
+For example, __vegan__ is a package designed for analyzing community datasets (like what you'd find in plant ecology studies), and __dplyr__ and __ggplot2__ are packages for tidying, manipulating, and plotting data. 
+
+#### Installing and Loading Packages
+
+```{r}
+#We first need to download our packages.  I liken this to 'buying video games'; we can't play them until we've bought them. So we can't use packages until we've downloaded them
+
+#As there are seemingly infinite packages, our computer can't possibly handle them all at once, so we must install the ones we need and load them when we need them.  
+
+#Once we download the package once, we never have to do it again. However, packages needed to be loaded each time we want to use functions within them.  (similar to having to put the game in the console each time we want to play it.)
+
+install.packages('tidyr')
+
+#We've now 'bought the video game', but we need to put it into our console to actually play it.  
+
+#We do this with the library() function
+
+library(tidyr)
+
+#Now we're ready to 'play our video game' (i.e. run functions within these two packages)
+
+```
+
+#### Practice Problem 1: install and load the 'dplyr' and 'ggplot2' packages
+Notice that install.packages() requires quotes, while library() does not.  
+
+```{r eval = FALSE}
+
+
+
+
+
+```
+
+
+## Section 2: Finding Our Data and Loading it to R
+R Can only work within a single **working directory** (i.e. a folder), therefore we have to tell R which folder we're working out of. 
+
+### Setting a Working Directory 
+Three Methods to get to your working directory
+
+__Method 1 (The Easy Way)__ Using the 'Files' tab in the bottom-right quadrant and navigating through our folders via button-click.  We then use the 'More' tab and the 'Set as Working Directory' button to set the selected folder as our working directory 
+
+__Method 2 (The Purist's Way)__ Using a function and the **file path** to set working directory. 
+A **file path** is just the path to the the file.  Each 'folder' (actually a directory) is separated by a slash mark. 
+
+```{r eval = FALSE}
+ 
+#Do Not Run This Code; our file paths are almost certainly different 
+
+setwd('~/Desktop/Intro_To_R_Workshop-master') #On Mac
+
+setwd('C:Users/UserName/Desktop/Intro_To_R_Workshop-master') # On PC
+
+```
+
+**Things to remember.**  Everyone's **file path** is different.  My files are currently in a folder named 'Desktop', but yours may be in your folder labelled "Coolest_R_Workshop_Ever" or "things_i_wont_ever_use".  
+
+__Method 3 (The Pro's Way)__ Using an online repository to store and retrieve data.
+This method is very good for sharing data across collaborators and ensuring your data is always available
+I am using GitHub, but there are packages to read files from Google Drive, iCloud, and DropBox
+
+###Loading Files into R
+R can pretty much handle any file type, however, much of what you'll do will be in .csv file format
+.csv are very similar to .xlsx (Excel) files, but to R, they're incredibly different. 
+
+You can save any .xlsx file to a .csv in the 'save as' tab of Excel. 
+
+There are two methods to inputting data that are very similar
+
+__Method 1 (Directly From our Computer)__
+
+```{r eval = FALSE}
+#First, making sure we are in the correct directory...
+
+flowerData <- read.csv('Flower_Data.csv')
+```
+
+###What is happening above? 
+
+*Four things 
+  +'Flower_Data.csv' is our data (aka an object)
+  +'read.csv()' is a function that reads .csv files
+  +The '<-' is assigning our data a name
+  +'flowerData' is the name we chose, though it could be anything we want it to be 
+
+In summary, we read in our data ('Flower_Data.csv') with a function ('read.csv()') and assigned ('<-') a name ('flowerData') to it. 
+
+__Method 2 (From Repository)__
+
+```{r warning = FALSE}
+flowerData <- read.csv('https://raw.githubusercontent.com/brandonhoenig/Intro_To_R_Workshop/master/Flower_Data.csv')
+```
+You'll likely only ever use the first method, but for simplicity of the workshop we'll use the latter method. 
+
+## Section 3: Visualizing and subsetting our data
+At some point, you're going to want to actually see your data as you would in an Excel spreadsheet.  There are two methods to do this if you use the **read.csv()** function. 
+
+###Viewing our data
+
+__Method 1:__ Just type the name of the object and execute it as a command
+```{r}
+flowerData
+```
+By using the function read.csv(), it allows us to see some observations (each row), as well as our variables (each column). 
+
+*Aside on Tidy Data, you can read more here https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html or here*
+
+
+Three rules of tidy data:
+1. All observations are in rows
+2. All variables are in columns 
+3. Only variables that describe the observation should be in the worksheet (this one is the hardest)
+    Example: If each variable is measurements of a nestling, then the temperature at the time of measurement should not be in the same worksheet as those physical measurements of the nestling.  Instead, a second worksheet should be used to describe the conditions of the day.  However, some identifier (in this case 'date') should be used to connect the two worksheets.  
+    
+
+__Method 2:__ Use the 'View()' function 
+```{r}
+View(flowerData)
+```
+This method provides a more 'Excel-type' view of the data, but is **highly recommended *against* for large datasets**. 
+
+###Evaluate our data
+Sometimes, you may want to get a summary of your data so you can see what R sees. 
+
+summary() is good for getting summary stats on your data
+
+str() is better for understanding what type of data you have. Won't be covered in this workshop, but can be important to know for more complex data analysis
+
+```{r}
+summary(flowerData)
+
+#or
+
+str(flowerData)
+```
+
+###Filtering and Subsetting our Data
+
+####Indexing Data
+Every cell in our data (flowerData) can be indexed by its coordinates (kind of like x,y coords) in the table. 
+
+*Syntax for indexing*
+
+data[row#,column#]
+
+
+For Example if wanted the sepal width (Sepal.Width) of the 23rd plant the code would be:
+```{r}
+flowerData[23,3]
+```
+
+Or if we wanted to get observations #23 - #87
+
+```{r}
+flowerData[c(23:87),] 
+
+# c() tells R that we want combine multiple things into one and ':' is used to indicate the range that we want
+# the comma is necessary to tell R that we are looking into rows (observations) not columns (variables)
+```
+
+
+*If we want the sepal width (or any variable) of every single point, there are two methods*
+
+__Method 1__ Using Indexing
+```{r}
+flowerData[,3] #comma is necessary as we want to tell R to look in the columns (variables), not the rows (observations). 
+```
+
+####Technically not 'indexing' data, but we're still filtering. 
+
+__Method 2__ Using the '$' symbol
+```{r}
+flowerData$Sepal.Width
+```
+Both methods work, though I prefer the latter as it provides me with a name for my variable. 
+
+You'll use the '$' operator often when you run functions on single variables at a time or in a long script.  
+
+#### Filtering Observations
+There are **infinite** ways to filter data, but I prefer using functions in the tidyverse package
+
+For example, say we only want to work with the setosa species and not analyze versicolor or virginica. 
+```{r}
+filter(.data = flowerData, Species == 'setosa')
+
+flowerData_setosa <- filter(.data = flowerData, Species == 'setosa')
+```
+
+Or if we want to use look at everything besides setosa we could do:
+
+```{r}
+flowerData_not_setosa <- filter(.data = flowerData, !Species == 'setosa')
+```
+
+In the above example, putting a '!' tells R that we want every species that does not equal to setosa. 
+
+#### Practice Problem 2:  Filter flowerData to only show virginica species and name this new data 'flowerData_virginica'.  Then find the mean sepal length (Sepal.Length) using either the summary() or mean() functions. 
+
+```{r eval = FALSE}
+
+
+
+
+
+
+
+```
+
+## Section 4: Functions, Objects and Arguments
+
+**Objects** are any thing in R that we want to do something with
+**Functions** are sets of code that allow us to do stuff with our objects
+**Arguments** are sets of variables within a function that allow us to modify our function
+
+For example, lets test if the virginica sepals are longer than the setosa sepals on average with a Mann Whitney U Test
+
+```{r}
+wilcox.test(x = flowerData_virginica$Sepal.Length, 
+            y = flowerData_setosa$Sepal.Length, 
+            alternative = 'two.sided')
+```
+
+###What happened above?
+
+*Five Things
+  +'wilcox.test()' was the *function* we used to perform the Mann Whitney U Test
+  +'x' is the *argument* for the first set of data for the test (flowerData_virginica$Sepal.Length)
+  +'y' is the *argument* for the second set of data for the test (flowerData_setosa$Sepal.Length)
+  +'alternative' is the *argument* that tells R if we want a two-tailed ('two.sided') or one-tailed ('less' or 'greater') test
+  +commas are used to separate arguments.  If we don't tell R where an argument stops... **no one will** (said ominously)
+  
+Everyone reading this line: "But Brandon, how am I supposed to learn every argument for every function?!?"
+
+Your lovely instructor, Brandon: "You don't"
+
+Using the '?' sign before a function will tell us all about it in the bottom-right quadrant under the 'Help' tab!
+```{r}
+?wilcox.test
+```
+We can see that there are many arguments within this particular function, many of which we didn't use above. 
+
+Each function has defaults for the arguments that are used if we don't supply information, though some arguments are entirely necessary (like x and y for this example). 
+
+
+
+#### Practice Problem 3: Perform a t Test (function: 't.test()') with a confidence interval set to 90% to determine if the petal width (Petal.Width) of virginica is greater than that of setosa. Use the '?' to find out the argument name for setting confidence intervals within the t.test() function
+
+```{r eval = FALSE}
+
+
+
+
+
+```
+
+### We can also manipulate our data and create new variables within R directly
+
+For example, say we want to get the relative sepal length instead of working with the raw lengths.  We'd need to write a line of code that does that for us.  Very useful for running functions on many cells at once or applying the same function to multiple observations
+
+```{r}
+flowerData$Relative.Sepal.Length <- flowerData$Sepal.Length/max(flowerData$Sepal.Length)
+```
+
+### What happened above?
+
+*Three Things
+  +We created a new column (variable) called 'Relative.Sepal.Length' in the flowerData object
+  +We figured out the relative sepal length by dividing each sepal length (Sepal.Length) by the largest sepal length 'max(Sepal.Length)' in our flowerData table.  
+  +We put every output of our function above into each observation of relative sepal length. 
+  
+
+## Section 5: Plotting Data
+
+This is an extremely short intro to plotting data in base R.  It is not the prettiest, it is not what I use, but it serves as a great introduction to plotting in R. If you're newly learning R, I'd say start with plotting data.  Its very satisfying to see your work come out into a graph, and its instant gratification that you figured out how to code something in R that looks (maybe) pretty. Personally, I use 'ggplot()' to plot my data, and will hopefully have a workshop on that soon. 
+
+###A few examples of plots in R:
+
+####Boxplot with base R
+```{r}
+boxplot(flowerData$Petal.Width ~ flowerData$Species)
+```
+
+#### Histogram with purple bars in Base R
+```{r}
+hist(x = flowerData$Sepal.Length,
+     col = 'purple')
+```
+####Histogram with alternating blue and green bars and a good main title
+
+We can use the 'c()' function to add multiple variables to each argument
+
+For Example:
+```{r}
+hist(x = flowerData$Sepal.Length,
+     col = c('blue','green'),
+     main = "My Hideously Colored Plot")
+```
+
+####Dot Plot of Sepal Length vs. Sepal Width using qplot
+
+qplot makes plotting easier by taking ggplot and wrapping it into a smaller, more manageable plotting function. Gives more functions than base plotting as above, but easier than ggplot. 
+
+
+```{r}
+qplot(geom = 'point',
+    x = flowerData$Sepal.Length, 
+     y = flowerData$Sepal.Width,
+     col = flowerData$Species,
+     main = "My Pretty Plot") 
+```
+####Whats happening above
+
+*Five Things 
+  +we used qplot() to plot data
+  +'geom = 'point'' told R that we want a point plot; other plot types can be found here https://ggplot2.tidyverse.org/reference/#section-layer-geoms
+  
+  +x & y told R which data we want on which axis
+  +col = flowerData$species told R that we want each species to have its own color
+  +main = 'My Pretty Plot' gives this plot a main title
+
+#### Modifying our plot
+
+scale_colour_manual allows us to tell R which points we want to be colored (breaks = c(...)) as well as which colors we want each point to be (values = c(...))
+
+```{r}
+
+qplot(geom = 'point',
+    x = flowerData$Sepal.Length, 
+     y = flowerData$Sepal.Width,
+     col = flowerData$Species,
+     main = "My Pretty Plot") +
+  scale_colour_manual(breaks = c('setosa','versicolor','virginica'),
+                      values  = c('black','pink','purple'))
+```
+
+####Whats happening above?
+
+
+#### Practice Problem 4: Using the qplot() function, make a dot plot of petal length (Petal.Length) vs. sepal length (Sepal.Length), make each species a different color than above, and add axis labels and a main title to the plot.  
+
+```{r}
+
+
+
+```
+
+## Section 6: Where to find help
+There is not a single R-user in the world that doesn't use Google to figure out problems.  Not a single person knows all the functions, arguments, objects, or anything that R has to offer.  
+
+Most times, a simple google search will help answer your question.  Here are some websites that I use for help:
+
+*R-Bloggers* https://www.r-bloggers.com/
+*Stack Overflow* https://stackoverflow.com/
+*R Pubs* https://rpubs.com/
+
+
+If you have your own data you'd like to work with or have questions about how you can format your data so that it will work with R, please let me know and we'll figure it out.  For a more in depth tutorial, visit https://r4ds.had.co.nz/.  This website will take you into more detail in the tidyverse and data science.  
+
