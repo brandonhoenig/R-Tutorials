@@ -7,6 +7,7 @@ runtime: shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
+library(shiny)
 library(learnr)
 library(ggplot2)
 library(tidyr)
@@ -289,7 +290,7 @@ ggplot(data = mtcars) +
 ```
 
 Fill in the missing data below to make the plot above. 
-```{r exercise-geom1, exercise = TRUE, exercise.eval=F}
+```{r exercise-geom1, exercise = TRUE, exercise.eval=F, eval = F}
 ggplot(data = mtcars) +
   geom_point() +
   geom_smooth(method = 'lm') 
